@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import os
 
-# Page setup
 st.set_page_config(page_title="Mental Health Detector", layout="centered")
 st.title("🧠 Mental Health Self-Assessment Form")
 
@@ -15,7 +14,6 @@ st.markdown("""
 > You **must enter your name** to proceed, but it will not appear in your result.
 """)
 
-# User Info
 name = st.text_input("Full Name (Required)")
 if not name.strip():
     st.warning("⚠️ Please enter your name to continue.")
@@ -40,7 +38,6 @@ stress = st.slider("Stress (feeling overwhelmed, pressured)", 0, 10, 0)
 sweaty = st.slider("Sweaty Palms During Nervousness", 0, 10, 0)
 
 if st.button("🧠 Submit and Predict"):
-
     diagnosis = []
     if anxiety > 6 and stress > 6 and sweaty > 6:
         diagnosis.append("signs of Anxiety Disorder")
@@ -79,7 +76,6 @@ if st.button("🧠 Submit and Predict"):
 
     st.markdown("<br><hr><center><sub>This mental health self-assessment was created by <strong>Upasana Awasthi</strong>.</sub></center>", unsafe_allow_html=True)
 
-    # Save responses silently to CSV
     data = {
         "Name": name,
         "Email/Contact": email,
@@ -109,13 +105,12 @@ if st.button("🧠 Submit and Predict"):
         df_new.to_csv(csv_file, index=False)
 
 # --- ADMIN PANEL ---
-
 st.markdown("---")
 st.subheader("🔐 Admin Panel (Restricted Access)")
 
 admin_password = st.text_input("Enter admin password to access data:", type="password")
 
-if admin_password == "YourSecurePasswordHere":  # Change this password
+if admin_password == "YourSecurePasswordHere":  # CHANGE THIS to your password
     if os.path.exists("responses.csv"):
         with open("responses.csv", "rb") as file:
             st.download_button(
