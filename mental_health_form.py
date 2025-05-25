@@ -31,7 +31,6 @@ alcohol = st.selectbox("Do you consume alcohol?", ["No", "Yes", "Occasionally"])
 st.markdown("---")
 st.subheader("🧾 Symptom Rating (0 = None, 10 = Extreme)")
 
-# Symptom sliders
 anxiety = st.slider("Anxiety (nervousness, fear, racing thoughts)", 0, 10, 0)
 mood = st.slider("Mood Swings (rapid or extreme emotional changes)", 0, 10, 0)
 fatigue = st.slider("Fatigue (constant tiredness, low energy)", 0, 10, 0)
@@ -40,7 +39,6 @@ adhd = st.slider("ADHD-like Symptoms (difficulty focusing, restlessness, impulsi
 stress = st.slider("Stress (feeling overwhelmed, pressured)", 0, 10, 0)
 sweaty = st.slider("Sweaty Palms During Nervousness", 0, 10, 0)
 
-# Submit button
 if st.button("🧠 Submit and Predict"):
 
     diagnosis = []
@@ -110,13 +108,14 @@ if st.button("🧠 Submit and Predict"):
     else:
         df_new.to_csv(csv_file, index=False)
 
-# -- ADMIN PANEL --
+# --- ADMIN PANEL ---
+
 st.markdown("---")
 st.subheader("🔐 Admin Panel (Restricted Access)")
 
 admin_password = st.text_input("Enter admin password to access data:", type="password")
 
-if admin_password == "IL060509PR":  # Replace with your strong password
+if admin_password == "YourSecurePasswordHere":  # Change this password
     if os.path.exists("responses.csv"):
         with open("responses.csv", "rb") as file:
             st.download_button(
