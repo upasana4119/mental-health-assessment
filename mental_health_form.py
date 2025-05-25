@@ -5,7 +5,7 @@ import os
 st.set_page_config(page_title="Mental Health Detector", layout="centered")
 st.title("🧠 Mental Health Self-Assessment Form")
 
-# User inputs (same as before)
+# Your input form here (same as before)...
 name = st.text_input("Full Name (Required)")
 if not name.strip():
     st.warning("⚠️ Please enter your name to continue.")
@@ -18,7 +18,7 @@ relationship = st.selectbox("Relationship Status", ["Single", "In a relationship
 smoking = st.selectbox("Do you smoke?", ["No", "Yes", "Occasionally"])
 alcohol = st.selectbox("Do you consume alcohol?", ["No", "Yes", "Occasionally"])
 
-# Symptom ratings (same as before)
+# Symptom ratings
 anxiety = st.slider("Anxiety (nervousness, fear, racing thoughts)", 0, 10, 0)
 mood = st.slider("Mood Swings (rapid or extreme emotional changes)", 0, 10, 0)
 fatigue = st.slider("Fatigue (constant tiredness, low energy)", 0, 10, 0)
@@ -28,10 +28,9 @@ stress = st.slider("Stress (feeling overwhelmed, pressured)", 0, 10, 0)
 sweaty = st.slider("Sweaty Palms During Nervousness", 0, 10, 0)
 
 if st.button("🧠 Submit and Predict"):
-    # Your diagnosis logic here...
-    # (Same as before)
+    # Diagnosis logic...
 
-    # Save data silently
+    # Save data
     data = {
         "Name": name,
         "Email/Contact": email,
@@ -47,7 +46,6 @@ if st.button("🧠 Submit and Predict"):
         "ADHD": adhd,
         "Stress": stress,
         "Sweaty Palms": sweaty,
-        # Add other fields if needed
     }
 
     df_new = pd.DataFrame([data])
@@ -62,5 +60,24 @@ if st.button("🧠 Submit and Predict"):
 
     st.success("Thank you for submitting your responses!")
 
-# **NO download button anywhere**
+# --- ADMIN PANEL ---
 
+st.markdown("---")
+st.subheader("🔐 Admin Panel (Restricted Access)")
+
+admin_password = st.text_input("Enter admin password to access data:", type="password")
+
+# Simple authentication: only show download if password correct
+if admin_password == "YourSecurePasswordHere":  # Change this
+    if os.path.exists("responses.csv"):
+        with open("responses.csv", "rb") as file:
+            st.download_button(
+                label="📥 Download All User Responses (CSV)",
+                data=file,
+                file_name="responses.csv",
+                mime="text/csv"
+            )
+    else:
+        st.warning("No data file found.")
+elif admin_password:
+    st.error("❌ Incorrect password.")
