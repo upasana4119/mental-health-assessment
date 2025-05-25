@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import io
 
 # Page setup
 st.set_page_config(page_title="Mental Health Detector", layout="centered")
@@ -85,7 +86,7 @@ if st.button("🧠 Submit and Predict"):
     # Credit note
     st.markdown("<br><hr><center><sub>This mental health self-assessment was created by <strong>Upasana Awasthi</strong>.</sub></center>", unsafe_allow_html=True)
 
-    # Save responses silently to CSV
+    # Save responses to CSV
     data = {
         "Name": name,
         "Email/Contact": email,
@@ -111,40 +112,39 @@ if st.button("🧠 Submit and Predict"):
         df_existing = pd.read_csv(csv_file)
         df_combined = pd.concat([df_existing, df_new], ignore_index=True)
         df_combined.to_csv(csv_file, index=False)
-   else:
-    df_new.to_csv(csv_file, index=False)
-    df_combined = df_new.copy()  # ✅ Ensure df_combined is defined
-
-import io
-
-# Convert the DataFrame to CSV in memory
-csv_buffer = io.StringIO()
-df_combined.to_csv(csv_buffer, index=False)
-csv_bytes = io.BytesIO(csv_buffer.getvalue().encode("utf-8"))
-
-# Streamlit download button
-st.download_button(
-    label="📥 Download My Response Record (Admin Only)",
-    data=csv_bytes,
-    file_name="responses.csv",
-    mime="text/csv"
-)
-
-st.markdown("---")
-st.subheader("🔐 Admin Panel (Restricted Access)")
-
-admin_password = st.text_input("Enter admin password to access data:", type="password")
-
-if admin_password == "YourSecurePasswordHere":  # Replace with your own password
-    if os.path.exists("responses.csv"):
-        with open("responses.csv", "rb") as file:
-            st.download_button(
-                label="📥 Download All User Responses (CSV)",
-                data=file,
-                file_name="responses.csv",
-                mime="text/csv"
-            )
     else:
-        st.warning("No data file found.")
-elif admin_password:
-    st.error("❌ Incorrect password.")
+        df_new.to_csv(csv_file, index=False)
+        df_combined = df_new.copy()  # Fix: ensure df_combined exists
+
+    # Convert the DataFrame to CSV in memory
+    csv_buffer = io.StringIO()
+    df_combined.to_csv(csv_buffer, index=False)
+    csv_bytes = io.BytesIO(csv_buffer.getvalue().encode("utf-8"))
+
+    # Streamlit download button
+    st.download_button(
+        label="📥 Download My Response Record (Admin Only)",
+        data=csv_bytes,
+        file_name="responses.csv",
+        mime="text/csv"
+    )
+
+    # Admin section
+    st.markdown("---")
+    st.subheader("🔐 Admin Panel (Restricted Access)")
+
+    admin_password = st.text_input("Enter admin password to access data:", type="password")
+
+    if admin_password == "YourSecurePasswordHere":  # Replace with your own password
+        if os.path.exists("responses.csv"):
+            with open("responses.csv", "rb") as file:
+                st.download_button(
+                    label="📥 Download All User Responses (CSV)",
+                    data=file,
+                    file_name="responses.csv",
+                    mime="text/csv"
+                )
+        else:
+            st.warning("No data file found.")
+    elif admin_password:
+        st.error("❌ Incorrect password.")
