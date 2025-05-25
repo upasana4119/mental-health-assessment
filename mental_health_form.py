@@ -111,8 +111,10 @@ if st.button("🧠 Submit and Predict"):
         df_existing = pd.read_csv(csv_file)
         df_combined = pd.concat([df_existing, df_new], ignore_index=True)
         df_combined.to_csv(csv_file, index=False)
-    else:
-        df_new.to_csv(csv_file, index=False)
+   else:
+    df_new.to_csv(csv_file, index=False)
+    df_combined = df_new.copy()  # ✅ Ensure df_combined is defined
+
 import io
 
 # Convert the DataFrame to CSV in memory
