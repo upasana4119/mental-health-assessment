@@ -111,13 +111,12 @@ if st.button("🧠 Submit and Predict"):
         df_new.to_csv(csv_file, index=False)
 
 # --- ADMIN PANEL ONLY ---
-
 st.markdown("---")
 st.subheader("🔐 Admin Panel (Restricted Access)")
 
 admin_password = st.text_input("Enter admin password to access data:", type="password")
 
-if admin_password == "il060509pr":  # Replace with your secure password
+if admin_password == "IL060509PR":  # <-- Replace with your real admin password
     if os.path.exists("responses.csv"):
         with open("responses.csv", "rb") as file:
             st.download_button(
