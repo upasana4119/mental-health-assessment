@@ -113,13 +113,21 @@ if st.button("🧠 Submit and Predict"):
         df_combined.to_csv(csv_file, index=False)
     else:
         df_new.to_csv(csv_file, index=False)
-with open("responses.csv", "rb") as file:
-    btn = st.download_button(
-        label="📥 Download My Response Record (Admin Only)",
-        data=file,
-        file_name="responses.csv",
-        mime="text/csv"
-    )
+import io
+
+# Convert the DataFrame to CSV in memory
+csv_buffer = io.StringIO()
+df_combined.to_csv(csv_buffer, index=False)
+csv_bytes = io.BytesIO(csv_buffer.getvalue().encode("utf-8"))
+
+# Streamlit download button
+st.download_button(
+    label="📥 Download My Response Record (Admin Only)",
+    data=csv_bytes,
+    file_name="responses.csv",
+    mime="text/csv"
+)
+
 st.markdown("---")
 st.subheader("🔐 Admin Panel (Restricted Access)")
 
