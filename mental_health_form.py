@@ -60,24 +60,4 @@ if st.button("🧠 Submit and Predict"):
 
     st.success("Thank you for submitting your responses!")
 
-# --- ADMIN PANEL ---
 
-st.markdown("---")
-st.subheader("🔐 Admin Panel (Restricted Access)")
-
-admin_password = st.text_input("Enter admin password to access data:", type="password")
-
-# Simple authentication: only show download if password correct
-if admin_password == "YourSecurePasswordHere":  # Change this
-    if os.path.exists("responses.csv"):
-        with open("responses.csv", "rb") as file:
-            st.download_button(
-                label="📥 Download All User Responses (CSV)",
-                data=file,
-                file_name="responses.csv",
-                mime="text/csv"
-            )
-    else:
-        st.warning("No data file found.")
-elif admin_password:
-    st.error("❌ Incorrect password.")
